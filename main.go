@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,6 +10,8 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+	"github.com/pressly/goose/v3/database"
 	"github.com/to4to/go-rss-feed/handler"
 )
 
@@ -22,6 +25,25 @@ func main() {
 		log.Fatal("PORT Not Found")
 	}
 	fmt.Println("Running At Port: ", portString)
+
+
+
+
+
+	dbURL:=os.Getenv("DB_URL")
+	if dbURL==""{
+		log.Fatal("DB_URL Not Found")
+	}
+
+
+	 conn,err:=  sql.Open("postgres", dbURL)
+	 database.New(conn)
+
+if err!=nil{
+	log.Fatal("Can't Connect To Data Base")
+}
+
+
 
 	router := chi.NewRouter()
 
