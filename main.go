@@ -7,14 +7,23 @@ import (
 	"net/http"
 	"os"
 
+	
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/pressly/goose/v3/database"
+//"github.com/to4to/go-rss-feed/internal"
 	"github.com/to4to/go-rss-feed/handler"
+
 )
 
+
+
+type apiConfig struct{
+DB *sql.DB
+}
 func main() {
 
 	godotenv.Load()
@@ -26,24 +35,18 @@ func main() {
 	}
 	fmt.Println("Running At Port: ", portString)
 
-
-
-
-
-	dbURL:=os.Getenv("DB_URL")
-	if dbURL==""{
+	dbURL := os.Getenv("DB_URL")
+	if dbURL == "" {
 		log.Fatal("DB_URL Not Found")
 	}
 
+	conn, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatal("Can't Connect To Data Base")
+	}
 
-	 conn,err:=  sql.Open("postgres", dbURL)
-	 database.New(conn)
-
-if err!=nil{
-	log.Fatal("Can't Connect To Data Base")
-}
-
-
+	database.New(conn)
+	apiCfg := apiConfig{DB: conn}
 
 	router := chi.NewRouter()
 
@@ -61,7 +64,7 @@ if err!=nil{
 
 	v1Router := chi.NewRouter()
 	v1Router.Get("/healthz", handler.HandlerReadiness)
-	v1Router.Get("/err",handler.HandlerErr)
+	v1Router.Get("/err", handler.HandlerErr)
 
 	router.Mount("/v1", v1Router)
 	srv := &http.Server{
@@ -70,7 +73,7 @@ if err!=nil{
 	}
 
 	fmt.Printf("Server Starting At Port: %v ", portString)
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 
 	if err != nil {
 		log.Fatal(err)
