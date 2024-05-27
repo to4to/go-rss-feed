@@ -39,9 +39,9 @@ func main() {
 
 	v1Router := chi.NewRouter()
 	v1Router.Get("/healthz", handler.HandlerReadiness)
+	v1Router.Get("/err",handler.HandlerErr)
 
 	router.Mount("/v1", v1Router)
-
 	srv := &http.Server{
 		Handler: router,
 		Addr:    ":" + portString,

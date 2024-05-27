@@ -24,5 +24,17 @@ func responseWithJson(w http.ResponseWriter /* Status code*/, code int, payload 
 
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
-	responseWithJson(w, code, map[string]string{"error": message})
+
+
+	//error code in 400s are client side error
+if code>499{
+log.Println("Responding With 5XX Error:" ,message)
+}
+
+
+
+type errorResponse struct {
+	Error string `json:"error"`
+}
+	responseWithJson(w, code, errorResponse{Error: message})
 }
