@@ -6,21 +6,23 @@ import (
 	"net/http"
 )
 
+func responseWithJson(w http.ResponseWriter /* Status code*/, code int, payload interface{}) {
 
+	data, err := json.Marshal(payload)
 
-func responseWithJson(w http.ResponseWriter, /* Status code*/code int,payload interface{}){
+	if err != nil {
+		log.Printf("Failed To MArshal Json: %v", payload)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Internal Server Error"))
+		return
+	}
 
-data,err:=json.Marshal(payload)
-
-if err!=nil{
-	log.Printf("Failed To MArshal Json: %v",payload)
-	w.WriteHeader(http.StatusInternalServerError)
-	w.Write([]byte("Internal Server Error"))
-	return
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(data)
 }
 
 
-w.Header().Set("Content-Type","application/json")
-w.WriteHeader(code)
-w.Write(data)
+func respondWithError(w http.ResponseWriter, code int, message string) {
+	responseWithJson(w, code, map[string]string{"error": message})
 }

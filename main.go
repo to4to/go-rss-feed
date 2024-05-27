@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/to4to/go-rss-feed/handler"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
+	"github.com/to4to/go-rss-feed/handler"
 )
 
 func main() {
@@ -38,7 +38,7 @@ func main() {
 	)
 
 	v1Router := chi.NewRouter()
-	v1Router.HandleFunc("/ready", handler.HandlerReadiness)
+	v1Router.Get("/healthz", handler.HandlerReadiness)
 
 	router.Mount("/v1", v1Router)
 
