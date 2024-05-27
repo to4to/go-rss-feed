@@ -4,17 +4,18 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
-func  main()  {
+func main() {
 
+	godotenv.Load()
 
+	portString := os.Getenv("PORT")
 
-	 portString:= os.Getenv("PORT")
-
-
-	 if portString==""{
+	if portString == "" {
 		log.Fatal("PORT Not Found")
-	 }
-	fmt.Println("Hello Go")
+	}
+	fmt.Println("Running At Port: ", portString)
 }
