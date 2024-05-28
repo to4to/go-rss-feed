@@ -7,23 +7,20 @@ import (
 	"net/http"
 	"os"
 
-	
-
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-	"github.com/pressly/goose/v3/database"
-//"github.com/to4to/go-rss-feed/internal"
-	"github.com/to4to/go-rss-feed/handler"
 
+	//"github.com/pressly/goose/v3/database"
+	//"github.com/to4to/go-rss-feed/handler"
+	"github.com/to4to/go-rss-feed/handler"
+	"github.com/to4to/go-rss-feed/internal/db"
+	"github.com/to4to/go-rss-feed/router"
 )
 
 
 
-type apiConfig struct{
-DB *sql.DB
-}
 func main() {
 
 	godotenv.Load()
@@ -45,32 +42,14 @@ func main() {
 		log.Fatal("Can't Connect To Data Base")
 	}
 
-	database.New(conn)
-	apiCfg := apiConfig{DB: conn}
+	//queries:=db.New(conn)
 
-	router := chi.NewRouter()
+	// apiCfg := ApiConfig{DB: db.New(conn)}
 
-	router.Use(
-		cors.Handler(cors.Options{
+	apiCfg:=ApiCofig{DB: db.New(conn)}
 
-			AllowedOrigins:   []string{"https://*", "http://*"},
-			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
-			ExposedHeaders:   []string{"Link"},
-			AllowCredentials: false,
-			MaxAge:           300,
-		}),
-	)
-
-	v1Router := chi.NewRouter()
-	v1Router.Get("/healthz", handler.HandlerReadiness)
-	v1Router.Get("/err", handler.HandlerErr)
-
-	router.Mount("/v1", v1Router)
-	srv := &http.Server{
-		Handler: router,
-		Addr:    ":" + portString,
-	}
+	r:=router.
+	
 
 	fmt.Printf("Server Starting At Port: %v ", portString)
 	err = srv.ListenAndServe()
