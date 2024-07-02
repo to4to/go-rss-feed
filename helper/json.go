@@ -7,7 +7,7 @@ import (
 )
 
 // responseWithJSON writes a JSON response with the specified HTTP status code and payload to the provided http.ResponseWriter.
-func responseWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+func RespondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 
 	data, err := json.Marshal(payload)
 
