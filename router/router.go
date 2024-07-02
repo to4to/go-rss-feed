@@ -21,8 +21,6 @@ func Router() chi.Router {
 		MaxAge: 300,
 	}))
 
-
-	
 	
 
 return router
