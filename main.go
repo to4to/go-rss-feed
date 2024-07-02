@@ -6,11 +6,16 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/joho/godotenv"
+	"github.com/to4to/go-rss-feed/router"
 )
 
+
+
 func main() {
+
+
+r:=router.Router()
 
 	godotenv.Load()
 	port := os.Getenv("PORT")
@@ -22,11 +27,9 @@ func main() {
 
 	fmt.Println("PORT :", port)
 
-	router := chi.NewRouter()
-
 	server := &http.Server{
 
-		Handler: router,
+		Handler: *r,
 		Addr:    ":" + port,
 	}
 
@@ -35,4 +38,5 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
