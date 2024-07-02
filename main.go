@@ -1,8 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+)
 
 func main() {
 
-	fmt.Println("Hello, structuring The Project")
+
+	godotenv.Load()
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("Port Not Bound ..failed to connect from env")
+
+	}
+
+
+	fmt.Printf("PORT :",port)
 }
