@@ -12,31 +12,32 @@ import (
 
 
 
+// main is the entry point of the program.
 func main() {
+    r := router.Router()
 
+    // Load environment variables from a .env file.
+    godotenv.Load()
+    
+    // Get the port number from the environment variables.
+    port := os.Getenv("PORT")
 
-r:=router.Router()
+    if port == "" {
+        log.Fatal("Port Not Bound ..failed to connect from env")
+    }
 
-	godotenv.Load()
-	port := os.Getenv("PORT")
+    fmt.Println("PORT :", port)
 
-	if port == "" {
-		log.Fatal("Port Not Bound ..failed to connect from env")
+    // Create an HTTP server with the specified router and port.
+    server := &http.Server{
+        Handler: r,
+        Addr:    ":" + port,
+    }
 
-	}
+    // Start the HTTP server and listen for incoming requests.
+    err := server.ListenAndServe()
 
-	fmt.Println("PORT :", port)
-
-	server := &http.Server{
-
-		Handler: *r,
-		Addr:    ":" + port,
-	}
-
-	err := server.ListenAndServe()
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
+    if err != nil {
+        log.Fatal(err)
+    }
 }
