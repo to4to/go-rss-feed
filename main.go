@@ -15,7 +15,6 @@ func main() {
     r := router.Router()
 
 
-r:=router.Router()
 
 	godotenv.Load()
 	port := os.Getenv("PORT")
@@ -28,7 +27,7 @@ r:=router.Router()
 
 	server := &http.Server{
 
-		Handler: *r,
+		Handler: r,
 		Addr:    ":" + port,
 	}
 

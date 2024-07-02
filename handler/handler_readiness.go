@@ -6,7 +6,7 @@ import (
 	"github.com/to4to/go-rss-feed/helper"
 )
 
-func handlerReadiness(w http.ResponseWriter, r *http.Request) {
+func HandlerReadiness(w http.ResponseWriter, r *http.Request) {
 
 	helper.RespondWithJSON(w, 200, struct{}{})
 
