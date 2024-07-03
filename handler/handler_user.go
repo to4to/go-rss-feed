@@ -3,7 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"log"
+	
 	"net/http"
 	"time"
 
@@ -27,7 +27,7 @@ func (l *LocalApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Reques
 	err := decoder.Decode(&params)
 
 	if err != nil {
-		helper.RespondWithError(w, 400, fmt.Sprintf("Error Parsing JSON", err))
+		helper.RespondWithError(w, 400, fmt.Sprintf("Error Parsing JSON %v", err))
 		return
 	}
 
@@ -40,7 +40,7 @@ func (l *LocalApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Reques
 
 
 	if err!=nil{
-		helper.RespondWithError(w, 400, fmt.Sprintf("Couldn't Create User", err))
+		helper.RespondWithError(w, 400, fmt.Sprintf("Couldn't Create User %v", err))
 		return
 	}
 	helper.RespondWithJSON(w, 200, user)
