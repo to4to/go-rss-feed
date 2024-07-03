@@ -1,14 +1,14 @@
 package main
 
 import (
-	"database/sql"
+	
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
+	
 	"github.com/to4to/go-rss-feed/router"
 )
 
@@ -38,13 +38,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	dbURL := os.Getenv("DB_URL")
-	if dbURL == "" {
-		log.Fatal("DB_URL not found in the Environment")
-	}
-
-	conn, err := sql.Open("postgres", dbURL)
-	if err != nil {
-		log.Fatal("Database Connection failed:", err)
-	}
+	
 }

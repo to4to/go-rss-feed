@@ -24,6 +24,9 @@ func Router() chi.Router {
 	v1router.Get("/healthz", handler.HandlerReadiness)
 	v1router.Get("/err", handler.HandlerError)
 
+	localApiConfig := &handler.LocalApiConfig{}
+	router.Post("/users", localApiConfig.HandlerCreateUser)
+
 	router.Mount("/v1", v1router)
 
 	return router
